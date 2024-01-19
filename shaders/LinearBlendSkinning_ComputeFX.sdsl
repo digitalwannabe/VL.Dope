@@ -1,0 +1,70 @@
+[Summary("")]
+shader LinearBlendSkinning_ComputeFX : ComputeShaderBase
+{
+    struct pos3norm3tex2 {
+        float3 pos;
+        float3 norm;
+        float2 uv;
+    };
+
+    struct Transform //needed put float4x4 into a structured buffer
+    {
+        float4x4 Matrix;
+    };
+
+    RWStructuredBuffer<pos3norm3tex2> Vertices;
+
+    int Bones =1;
+    bool is3D;
+    //bool IsInstanced <string uiname="Use Instance Transform";>;
+
+    StructuredBuffer<float4> LBS;
+    StructuredBuffer<Transform> Tmatrix;
+    
+
+	
+
+    override void Compute()
+    {
+        uint vID = streams.DispatchThreadId.x;
+        uint iID = 0;
+
+        float3 posO;
+
+
+    
+        for (int i=0;i<Bones;i++){
+        
+            float4x3 matrixT = float4x3(Tmatrix[iID*Bones+i].Matrix[0][0],Tmatrix[iID*Bones+i].Matrix[0][1],Tmatrix[iID*Bones+i].Matrix[0][2],
+                                        Tmatrix[iID*Bones+i].Matrix[1][0],Tmatrix[iID*Bones+i].Matrix[1][1],Tmatrix[iID*Bones+i].Matrix[1][2],
+                                        Tmatrix[iID*Bones+i].Matrix[2][0],Tmatrix[iID*Bones+i].Matrix[2][1],Tmatrix[iID*Bones+i].Matrix[2][2],
+                                        Tmatrix[iID*Bones+i].Matrix[3][0],Tmatrix[iID*Bones+i].Matrix[3][1],Tmatrix[iID*Bones+i].Matrix[3][2]);
+    
+            if (!is3D){
+                    matrixT[2][2]=0.0f;
+                    matrixT[2][0]=matrixT[3][0];
+                    matrixT[2][1]=matrixT[3][1];
+                }
+        
+        posO.x+=LBS[vID*Bones+i].x*matrixT[0][0]+LBS[vID*Bones+i].y*matrixT[1][0]+LBS[vID*Bones+i].z*matrixT[2][0]+LBS[vID*Bones+i].w*matrixT[3][0];
+        posO.y+=LBS[vID*Bones+i].x*matrixT[0][1]+LBS[vID*Bones+i].y*matrixT[1][1]+LBS[vID*Bones+i].z*matrixT[2][1]+LBS[vID*Bones+i].w*matrixT[3][1];
+        posO.z+=LBS[vID*Bones+i].x*matrixT[0][2]+LBS[vID*Bones+i].y*matrixT[1][2]+LBS[vID*Bones+i].z*matrixT[2][2]+LBS[vID*Bones+i].w*matrixT[3][2];
+
+        }
+
+
+        pos3norm3tex2 v;
+        v.pos = posO;
+        v.norm = float3(0.,0.,1.0);
+        v.uv = 0.;
+
+        /*
+        if (IsInstanced){
+        v.pos = mul(float4(posO,1),Imatrix[iID]);
+        }
+        else{
+            v.pos = posO;
+        }*/
+        Vertices[vID]=v;
+    }
+};
