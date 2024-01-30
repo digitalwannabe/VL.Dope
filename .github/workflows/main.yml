@@ -1,0 +1,31 @@
+name: push_nuget
+
+# on push on master
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Git Checkout
+      uses: actions/checkout@master
+    
+    - name: Setup MSBuild.exe
+      uses: microsoft/setup-msbuild@v1.1
+
+    - name: Setup Nuget.exe
+      uses: nuget/setup-nuget@v1
+
+    - name: Publish VL Nuget
+      uses: vvvv/PublishVLNuget@1.0.42
+      with:
+        csproj: src\VL.Dope.csproj
+        nuspec: deployment\VL.Dope.nuspec
+        icon-src: https://lichterloh.tv/dev/vl-dope/dope-logo-128.png
+        icon-dst: ./deployment/nugeticon.png
+        nuget-key: ${{ secrets.NUGET_KEY }}

@@ -3,6 +3,7 @@
 
 using System.Runtime.InteropServices;
 using VL.Lib.Collections;
+using Vector3 = Stride.Core.Mathematics.Vector3;
 
 namespace Dope;
 
@@ -15,7 +16,7 @@ public static class DopeNativeWrapper
     private static extern int ReleaseMemory(IntPtr ptr);
 
     public static IEnumerable<double> ComputeWeights(IEnumerable<Vector3> vertices, IEnumerable<int> indices, bool is3D, IEnumerable<Vector3> controls,
-                                IEnumerable<int> pointHandleIndices, IEnumerable<int> boneEdgeIndices, IEnumerable<int> cageEdgeIndices, bool bind)
+                                IEnumerable<int> pointHandleIndices, IEnumerable<int> boneEdgeIndices, IEnumerable<int> cageEdgeIndices/*, bool bind*/)
     {
         int dim;
         int entries = vertices.Count();
@@ -49,8 +50,8 @@ public static class DopeNativeWrapper
 
         //FLbsArray.Count() = lbsSize;
 
-        if (bind)
-        {
+ //       if (bind)
+ //       {
             double[] V = new double[entriesXYz];
             double[] C = new double[cPointsXYz];
 
@@ -90,7 +91,7 @@ public static class DopeNativeWrapper
             int[] CE = new int[cageEdgeIndices.Count()];
             CE = cageEdgeIndices.ToArray();
 
-            
+
 
             try
             {
@@ -113,10 +114,10 @@ public static class DopeNativeWrapper
 
             finally
             {
-                
+
             }
-            
-        }
+
+ //       }
         return w;
     }
 

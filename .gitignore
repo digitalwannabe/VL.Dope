@@ -2,3 +2,7 @@
 /src/DopeNativeWrapper/bin/
 /src/DopeNativeWrapper/.vs/
 /EditShaders/
+/src/obj/
+/src/bin/
+/src/.vs/
+/lib/net6.0/VL.Dope.dll
