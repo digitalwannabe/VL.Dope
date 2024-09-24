@@ -20,6 +20,8 @@ shader LinearBlendSkinning_ComputeFX : ComputeShaderBase
 
     StructuredBuffer<float4> LBS;
     StructuredBuffer<Transform> Tmatrix;
+    StructuredBuffer<float2> UVsBuffer;
+    
     
 
 	
@@ -56,7 +58,7 @@ shader LinearBlendSkinning_ComputeFX : ComputeShaderBase
         pos3norm3tex2 v;
         v.pos = posO;
         v.norm = float3(0.,0.,1.0);
-        v.uv = 0.;
+        v.uv = UVsBuffer[vID];//0.;//
 
         /*
         if (IsInstanced){
