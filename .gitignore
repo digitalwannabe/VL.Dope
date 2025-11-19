@@ -6,3 +6,5 @@
 /src/bin/
 /src/.vs/
 /lib/net6.0/VL.Dope.dll
+/src/IKUnitTest/
+/lib/net8.0/VL.Dope.dll

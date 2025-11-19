@@ -1,18 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <!-- Prevent SDK from auto-generating the TargetFrameworkAttribute which can cause
+      CS0579 duplicate attribute errors when other AssemblyInfo sources exist. -->
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="VL.Core" Version="2023.5.2" />
+    <PackageReference Include="VL.Core" Version="2025.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="VL.Core" />
+    <Using Include="VL.Core.Import" />
+    <Using Include="VL.Lib.Collections" />
+    <Using Include="Stride.Core.Mathematics" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy /y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(ProjectDir)..\lib\net6.0\&quot;" />
+    <Exec Command="xcopy /y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(ProjectDir)..\lib\net8.0\&quot;" />
   </Target>
 
 </Project>

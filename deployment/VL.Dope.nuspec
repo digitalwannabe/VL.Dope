@@ -3,7 +3,7 @@
     <metadata>
         <!-- Required elements-->
         <id>VL.Dope</id>
-        <version>1.0.2-alpha</version>
+        <version>1.0.3-alpha</version>
         <description>Auto-Rigging for 2D/3D meshes</description>
         <authors>digital.wannabe</authors>
         <license type="expression">MIT</license>
